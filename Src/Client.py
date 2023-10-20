@@ -14,8 +14,10 @@ class Client:
         except Exception as e:
             print(f"Error connecting to the server: {e}")
 
+    #
     def send_message(self, message):
         try:
+            # Convertir l'objet Python en JSON
             json_message = json.dumps(message)
             self.socket.send(json_message.encode())
         except Exception as e:
@@ -25,6 +27,7 @@ class Client:
         try:
             data = self.socket.recv(1024)
             if data:
+                # Charger le JSON en un objet Python
                 message = json.loads(data.decode())
                 return message
         except Exception as e:
@@ -34,5 +37,4 @@ class Client:
     def close(self):
         self.socket.close()
         print("Connection closed.")
-
 

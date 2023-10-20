@@ -1,6 +1,8 @@
 # Exemple d'utilisation :
 import socket
 import json
+from time import sleep
+
 from Src.Client import Client
 
 def main():
@@ -12,26 +14,26 @@ def main():
     client.connect()
 
     try:
-        # Créez le message que vous souhaitez envoyer sous forme de dictionnaire
-        message_to_send = {
-            "action": "fire",
-            "x": 3,
-            "y": 4
-        }
 
-        # Envoi du message au serveur
-        client.send_message(message_to_send)
+            x = int(input("Saisissez la coordonnée X : "))
+            y = int(input("Saisissez la coordonnée Y : "))
 
-        # Attente et réception de la réponse du serveur
-        response = client.receive_message()
-        if response:
-            print(f"Server response: {response}")
+            # Créez un objet ShipCell avec les coordonnées X et Y
+            ship_cell = {"x": x, "y": y}
+
+            # Envoi du message au serveur
+            client.send_message(ship_cell)
+            print(f"Message sent: {ship_cell}\n")
+            # Attente et réception de la réponse du serveur
+            response = client.receive_message()
+            if response:
+                print(f"Server response: {response}")
+                # Traitez la réponse du serveur selon les besoins
+
 
     finally:
         # Fermeture de la connexion
         client.close()
-
-
 
 if __name__ == "__main__":
     main()
