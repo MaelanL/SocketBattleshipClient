@@ -1,5 +1,6 @@
 import json
 import socket
+import random
 
 from Src.ClientRequest import ClientRequest
 
@@ -25,9 +26,36 @@ class BattleShipClient:
     def close(self):
         self.socket.close()
 
+    def place_ships(self):
+        print("How would you like to place your ships?")
+        print("1. Random placement")
+        print("2. Manual placement")
+
+        choice = input("Enter your choice (1 or 2): ")
+
+        if choice == "1":
+            self.place_ships_random()
+        elif choice == "2":
+            self.place_ships_manual()
+        else:
+            print("Invalid choice. Exiting.")
+
+    def place_ships_random(self):
+        board = [{"x": random.randint(0, 9), "y": random.randint(0, 9)} for _ in range(15)]
+        request = ClientRequest(board=board)
+        self.send_request(request)
+
+    def place_ships_manual(self):
+        print("Enter the coordinates to place your ships (e.g., 0 1)")
+        board = [{"x": int(x), "y": int(y)} for x, y in [input("Enter coordinates: ").split() for _ in range(15)]]
+        request = ClientRequest(board=board)
+        self.send_request(request)
+
+
     def play(self):
         try:
             self.connect()
+            self.place_ships()
             while True:
                 # Get user input for x and y coordinates
                 x = int(input("Enter x-coordinate: "))

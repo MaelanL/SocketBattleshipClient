@@ -1,66 +1,43 @@
 import tkinter as tk
-from tkinter import messagebox
-from Src.BattleShipClient import BattleShipClient
-import tkinter as tk
-from tkinter import messagebox
 
-from Src.ClientRequest import ClientRequest
+# Configuration initiale pour la taille de la grille
+GRID_SIZE = 10
 
-
-class BattleshipGUI:
-    def __init__(self, root, client):
+class BattleShipGUI:
+    def __init__(self, root):
         self.root = root
-        self.client = client
-        self.root.title("Battleship Game")
+        self.root.title("Bataille Navale")
 
-        # Ajout des numéros de lignes et de colonnes
-        for i in range(10):
-            tk.Label(self.root, text=str(i)).grid(row=i + 1, column=0)  # Numéros des lignes
-            tk.Label(self.root, text=str(i)).grid(row=0, column=i + 1)  # Numéros des colonnes
+        # Création d'une frame pour la grille de jeu
+        self.grid_frame = tk.Frame(self.root)
+        self.grid_frame.pack()
 
-        # Initialisation de la grille
-        self.buttons = []
-        for i in range(10):
-            row = []
-            for j in range(10):
-                btn = tk.Button(self.root, text="", width=5, height=2, command=lambda i=i, j=j: self.attack_cell(i, j))
-                btn.grid(row=i + 1, column=j + 1)  # Ajustement pour tenir compte des numéros
-                row.append(btn)
-            self.buttons.append(row)
+        # Initialisation de la grille de boutons pour représenter le champ de bataille
+        self.buttons = [[None for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+        for x in range(GRID_SIZE):
+            for y in range(GRID_SIZE):
+                btn = tk.Button(self.grid_frame, text=' ', width=4, height=2,
+                                command=lambda x=x, y=y: self.button_click(x, y))
+                btn.grid(row=y+1, column=x+1)
+                self.buttons[y][x] = btn
 
-    def attack_cell(self, x, y):
-        self.client.connect()
+        # Ajout des numéros autour de la grille (en haut et à gauche)
+        for i in range(1, GRID_SIZE+1):
+            tk.Label(self.grid_frame, text=str(i)).grid(row=0, column=i)
+            tk.Label(self.grid_frame, text=str(i)).grid(row=i, column=0)
 
-        # Envoie de la requête au serveur
-        request = ClientRequest(x, y)
-        self.client.send_request(request)
+    def button_click(self, x, y):
+        print(f"Button clicked at {x}, {y}")
+        # Ici, vous ajouterez la logique pour communiquer avec le serveur
 
-        # Obtention de la réponse du serveur
-        response = self.client.receive_response()
+        # Pour l'exemple, on marque simplement le bouton avec une 'X'
+        self.buttons[y][x].config(text='X', state='disabled')
 
-        # Mettre à jour l'interface en fonction de la réponse
-        # Par exemple, vous pourriez changer la couleur du bouton pour indiquer si le tir a touché ou manqué
-        if response["opponentCellsDamaged"]:
-            self.buttons[x][y].config(bg='red')
-        else:
-            self.buttons[x][y].config(bg='blue')
-
-        # Affichage des messages en fonction de la réponse
-        if response["hasPlayerWon"]:
-            messagebox.showinfo("Game Over", "You have won!")
-            self.root.destroy()
-        elif response["hasOpponentWon"]:
-            messagebox.showinfo("Game Over", "Opponent has won!")
-            self.root.destroy()
-
-        self.client.close()
-
-    def run(self):
-        self.root.mainloop()
-
+# Démarrer l'interface graphique
+def main():
+    root = tk.Tk()
+    gui = BattleShipGUI(root)
+    root.mainloop()
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    client = BattleShipClient("localhost", 8080)  # Ajustez l'adresse et le port en fonction de votre configuration
-    gui = BattleshipGUI(root, client)
-    gui.run()
+    main()
