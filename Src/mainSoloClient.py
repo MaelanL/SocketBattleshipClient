@@ -10,9 +10,9 @@ def get_user_attack_coordinates():
     y = int(input("Entrez y : "))
     return x, y
 
-def mainClient1():
+def mainMultiClient1():
     host = "127.0.0.1"
-    port = 2000
+    port = 1100
 
     client = Client(host, port)
     client.connect()
@@ -32,4 +32,4 @@ def mainClient1():
     client.close()
 
 if __name__ == "__main__":
-    mainClient1()
+    mainMultiClient1()

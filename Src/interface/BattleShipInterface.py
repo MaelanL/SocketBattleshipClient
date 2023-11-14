@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import simpledialog
 
 from Src.client.Client import Client
-from Src.gameHandler.GameManager import GameManager
+from GameManagerInterface import *
 
 
 class BattleShipInterface:
@@ -34,26 +34,25 @@ class BattleShipInterface:
                 self.buttons[i][j].grid(row=i, column=j)
 
     def manual_placement(self):
-        # Logique pour le placement manuel des bateaux
-        pass
+        # Appelle la méthode pour le placement manuel
+        self.game_manager.initialize_game_interface(manual_placement=True)
 
     def random_placement(self):
-        # Logique pour le placement aléatoire des bateaux
-        pass
+        # Appelle la méthode pour le placement aléatoire
+        self.game_manager.initialize_game_interface(manual_placement=False)
 
     def attack(self):
-        # Logique pour l'attaque
-        pass
+        # Ouvre une boîte de dialogue pour obtenir les coordonnées d'attaque de l'utilisateur
+        x, y = self.get_user_attack_coordinates()
+        if x is not None and y is not None:
+            self.game_manager.make_attack_interface(x, y)
+
+    def get_user_attack_coordinates(self):
+        x = simpledialog.askinteger("Attaque", "Entrez la coordonnée x (0-9):", minvalue=0, maxvalue=9)
+        y = simpledialog.askinteger("Attaque", "Entrez la coordonnée y (0-9):", minvalue=0, maxvalue=9)
+        return x, y
 
     def update_status(self, message):
         self.status_label.config(text=message)
 
-def main():
-    root = tk.Tk()
-    client = Client("127.0.0.1", 1110)
-    game_manager = GameManager(client)
-    app = BattleShipInterface(root, game_manager)
-    root.mainloop()
 
-if __name__ == "__main__":
-    main()

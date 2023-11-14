@@ -6,6 +6,9 @@ from Src.model.ShipCell import ShipCell
 class GameManager:
     def __init__(self, client):
         self.client = client
+        # Initialisation des plateaux du joueur et de l'adversaire
+        self.player_board = [['O'] * 10 for _ in range(10)]
+        self.opponent_board = [['O'] * 10 for _ in range(10)]
 
     def initialize_game(self):
         choice = input("Choisissez la configuration des bateaux (manuel/aleatoire) : ")
@@ -63,3 +66,26 @@ class GameManager:
 
     def is_player_turn(self, response):
         return response.get("isPlayerTurn", False)
+
+    def print_boards(self):
+        # En-têtes pour les colonnes ajustées pour l'alignement
+        cols = ' ' * 2 + '  '.join([f'{i}' for i in range(10)])  # Commencez par 0 à 9
+        print("\n" + "Votre plateau:" + " " * 23 + "Plateau adverse:")
+        print(cols + " " * 7 + cols)
+
+        for i in range(10):
+            player_row = ['•' if cell == 'O' else ('X' if cell == 'X' else 'O') for cell in self.player_board[i]]
+            opponent_row = ['•' if cell == 'O' else ('X' if cell == 'X' else 'O') for cell in self.opponent_board[i]]
+            # Ajoutez deux espaces entre chaque symbole pour une apparence de grille carrée
+            player_row_formatted = '  '.join(player_row)
+            opponent_row_formatted = '  '.join(opponent_row)
+            # Alignez les numéros des lignes à droite et ajustez les espaces
+            print(f'{i} {player_row_formatted}  ' + " " * 5 + f'{i} {opponent_row_formatted}')
+
+    def update_board(self, board, cells_attacked, cells_damaged):
+        for cell in cells_attacked:
+            x, y = cell['x'], cell['y']
+            board[y][x] = 'X'  # Marque le tir sans toucher de bateau
+        for cell in cells_damaged:
+            x, y = cell['x'], cell['y']
+            board[y][x] = '1'  # Marque le coup réussi sur un bateau
