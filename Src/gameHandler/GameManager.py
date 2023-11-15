@@ -9,15 +9,18 @@ class GameManager:
         # Initialisation des plateaux du joueur et de l'adversaire
         self.player_board = [['O'] * 10 for _ in range(10)]
         self.opponent_board = [['O'] * 10 for _ in range(10)]
+        self.computer_level = 1
 
     def initialize_game(self):
+        self.computer_level = input("Choisissez le niveau de l'ordinateur (1-3, laissez vide pour niveau 1): ") or '1'
+        self.computer_level = int(self.computer_level)
         choice = input("Choisissez la configuration des bateaux (manuel/aleatoire) : ")
         if choice.lower() == "manuel":
             board = self.manual_ship_placement()
         else:
             board = self.random_ship_placement()
         board_dict = [cell.to_dict() for cell in board]
-        request = {'board': board_dict, 'x': None, 'y': None}
+        request = {'board': board_dict, 'computerLevel': self.computer_level, 'x': None, 'y': None}
         self.client.send_request(request)
 
     def manual_ship_placement(self):

@@ -12,7 +12,7 @@ def get_user_attack_coordinates():
 
 def mainMultiClient1():
     host = "127.0.0.1"
-    port = 1100
+    port = 3000
 
     client = Client(host, port)
     client.connect()
@@ -25,9 +25,17 @@ def mainMultiClient1():
         response = client.receive_response()
         game_over = game_manager.handle_response(response)
 
-        if not game_over and game_manager.is_player_turn(response):
-            x, y = get_user_attack_coordinates()
-            game_manager.make_attack(x, y)
+        if not game_over:
+            game_manager.update_board(game_manager.player_board, response.get('playerCellsAttacked', []),
+                                      response.get('playerCellsDamaged', []))
+            game_manager.update_board(game_manager.opponent_board, response.get('opponentCellsAttacked', []),
+                                      response.get('opponentCellsDamaged', []))
+
+            game_manager.print_boards()
+
+            if game_manager.is_player_turn(response):
+                x, y = get_user_attack_coordinates()
+                game_manager.make_attack(x, y)
 
     client.close()
 
