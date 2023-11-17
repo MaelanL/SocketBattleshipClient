@@ -50,8 +50,8 @@ class GameManager:
                     break
         return board
 
-    def make_attack(self, x, y):
-        request = {'board': None, 'x': x, 'y': y}
+    def make_request(self,type,x, y):
+        request = {'type':type,'board': None, 'x': x, 'y': y}
         self.client.send_request(request)
 
     def handle_response(self, response):

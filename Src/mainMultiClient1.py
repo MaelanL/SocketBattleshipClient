@@ -14,7 +14,7 @@ def get_user_attack_coordinates():
 
 def mainMultiClient1():
     auth_host = "127.0.0.1"
-    auth_port = 12345  # Le même port que celui du AuthServer
+    auth_port = 9999  # Le même port que celui du AuthServer
 
     auth_client = AuthenticationClient(auth_host, auth_port)
     username = input("Nom d'utilisateur: ")
@@ -23,8 +23,8 @@ def mainMultiClient1():
 
     if len(token) == 36:  # Supposant que le token est un UUID
         host = "127.0.0.1"
-        port = 2000
-
+        port = 2001
+        print("Connexion au serveur de jeu...")
         client = Client(host, port)
         client.connect()
 
@@ -45,8 +45,15 @@ def mainMultiClient1():
                 game_manager.print_boards()
 
                 if game_manager.is_player_turn(response):
-                    x, y = get_user_attack_coordinates()
-                    game_manager.make_attack(x, y)
+                    type = input("taper 2 si vous voulez abandonner, sinon taper 1: ")
+                    # si type = 2, on abandonne la partie sinon on joue
+                    if type == "2":
+                        game_manager.make_request(type, None, None)
+                        print("Vous avez abandonné la partie")
+                        client.close()
+                    else:
+                        x, y = get_user_attack_coordinates()
+                        game_manager.make_request(type, x, y)
 
         client.close()
     else:
