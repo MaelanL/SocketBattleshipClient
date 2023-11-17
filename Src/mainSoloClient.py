@@ -11,7 +11,7 @@ def get_user_attack_coordinates():
     y = int(input("Entrez y : "))
     return x, y
 
-def mainMultiClient1():
+def mainSoloClient():
     auth_host = "127.0.0.1"
     auth_port = 12345  # Le même port que celui du AuthServer
 
@@ -22,7 +22,7 @@ def mainMultiClient1():
 
     if len(token) == 36:  # Supposant que le token est un UUID
         host = "127.0.0.1"
-        port = 3000
+        port = 3110
 
         client = Client(host, port)
         client.connect()
@@ -52,4 +52,4 @@ def mainMultiClient1():
         print("Échec de l'authentification")
 
 if __name__ == "__main__":
-    mainMultiClient1()
+    mainSoloClient()
