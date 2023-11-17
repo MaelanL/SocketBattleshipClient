@@ -50,7 +50,8 @@ def mainMultiClient1():
                     if type == "2":
                         game_manager.make_request(type, None, None)
                         print("Vous avez abandonné la partie")
-                        client.close()
+
+
                     else:
                         x, y = get_user_attack_coordinates()
                         game_manager.make_request(type, x, y)
