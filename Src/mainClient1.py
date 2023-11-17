@@ -3,7 +3,8 @@ import json
 
 from Src.client.AuthenticationClient import AuthenticationClient
 from Src.client.Client import Client
-from Src.gameHandler.GameManager import GameManager
+from Src.gameHandler.GameManager import *
+
 
 
 def get_user_attack_coordinates():
@@ -11,7 +12,7 @@ def get_user_attack_coordinates():
     y = int(input("Entrez y : "))
     return x, y
 
-def mainSoloClient():
+def mainClient1():
     auth_host = "127.0.0.1"
     auth_port = 9999  # Le même port que celui du AuthServer
 
@@ -21,14 +22,22 @@ def mainSoloClient():
     token = auth_client.authenticate(username, password)
 
     if len(token) == 36:  # Supposant que le token est un UUID
-        host = "127.0.0.1"
-        port = 1001
-        print("Connexion au serveur de jeu...")
+        mode = input("taper solo si vous voulez en solo, sinon taper multi: ")
+        if mode =="solo":
+            host = "127.0.0.1"
+            port = 1001
+            print("Connexion au serveur de jeu solo...")
+        else:
+            host = "127.0.0.1"
+            port = 2001
+            print("Connexion au serveur de jeu multi...")
+
+
         client = Client(host, port)
         client.connect()
 
         game_manager = GameManager(client)
-        game_manager.initialize_game()
+        game_manager.initialize_game(mode)
 
         game_over = False
         while not game_over:
@@ -50,6 +59,7 @@ def mainSoloClient():
                         game_manager.make_request(type, None, None)
                         print("Vous avez abandonné la partie")
 
+
                     else:
                         x, y = get_user_attack_coordinates()
                         game_manager.make_request(type, x, y)
@@ -58,5 +68,7 @@ def mainSoloClient():
     else:
         print("Échec de l'authentification")
 
+
+
 if __name__ == "__main__":
-    mainSoloClient()
+    mainClient1()
