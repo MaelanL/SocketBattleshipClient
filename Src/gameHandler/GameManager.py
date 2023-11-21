@@ -1,6 +1,12 @@
 import random
 
-from Src.model.ShipCell import ShipCell
+import sys
+from pathlib import Path
+
+# Calculez le chemin du répertoire parent et imprimez-le pour le vérifier
+parent_dir = str(Path(__file__).parent.parent)
+sys.path.append(parent_dir)
+from model.ShipCell import ShipCell
 
 
 class GameManager:
@@ -55,8 +61,12 @@ class GameManager:
                     break
         return board
 
-    def make_request(self,type,x, y):
-        request = {'type':type,'board': None, 'x': x, 'y': y}
+    def make_request(self, type, x, y):
+        request = {
+            'type': type,
+            'board': None,
+            'x': x,
+            'y': y}
         self.client.send_request(request)
 
     def handle_response(self, response):

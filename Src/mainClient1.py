@@ -1,6 +1,10 @@
 import socket
 import json
 
+import sys
+from pathlib import Path
+
+
 from Src.client.AuthenticationClient import AuthenticationClient
 from Src.client.Client import Client
 from Src.gameHandler.GameManager import *

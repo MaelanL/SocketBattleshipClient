@@ -1,5 +1,11 @@
 import socket
 import json
+import sys
+from pathlib import Path
+
+# Calculez le chemin du répertoire parent et imprimez-le pour le vérifier
+#parent_dir = str(Path(__file__).parent.parent)
+#sys.path.append(parent_dir)
 
 from Src.client.AuthenticationClient import AuthenticationClient
 from Src.client.Client import Client
@@ -54,6 +60,7 @@ def mainMultiClient2():
                 if game_manager.is_player_turn(response):
                     type = input("taper 2 si vous voulez abandonner, sinon taper 1: ")
                     # si type = 2, on abandonne la partie sinon on joue
+
                     if type == "2":
                         game_manager.make_request(type, None, None)
                         print("Vous avez abandonné la partie")
