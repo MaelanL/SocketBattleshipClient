@@ -20,7 +20,7 @@ def get_user_attack_coordinates():
 
 def mainMultiClient2():
     auth_host = "127.0.0.1"
-    auth_port = 9999  # Le même port que celui du AuthServer
+    auth_port = 9999
 
     auth_client = AuthenticationClient(auth_host, auth_port)
     username = input("Nom d'utilisateur: ")
@@ -31,7 +31,7 @@ def mainMultiClient2():
     # Convertir la chaîne JSON en dictionnaire Python
     print(response)
 
-    # Utiliser les expressions régulières pour trouver le statut
+
     status = re.search(r'status=(\d+)', response)
 
     if status:

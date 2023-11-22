@@ -34,8 +34,8 @@ class GameModeSelectionInterface:
         except Exception as e:
             messagebox.showerror("Erreur de connexion", f"Impossible de se connecter au serveur: {e}")
 
-    def launch_game_interface(self):
-        # Lancer l'interface de jeu de la bataille navale
-        game_manager_interface = GameManagerInterface(self.client, self.token)
+    def launch_game_interface(self, client):
+        # Lancement l'interface de jeu de la bataille navale
+        game_manager_interface = GameManagerInterface(client, self.token)  # Passer le token ici
         battle_ship_interface = BattleShipInterface(game_manager_interface)
         battle_ship_interface.run()

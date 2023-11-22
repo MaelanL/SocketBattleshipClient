@@ -51,21 +51,19 @@ class AuthenticationInterface:
         else:
             messagebox.showerror("Échec", "token non valide")
 
-
-
-
-
-
     def launch_game_mode_selection(self, token):
         # Créez un nouveau Tk root ici pour la nouvelle fenêtre
         new_root = tk.Tk()
         new_root.title("Sélection du Mode de Jeu")
-        game_mode_selection_interface = GameModeSelectionInterface(self.client, new_root, token)
+
+        # Créer une nouvelle instance de Client
+        client = self.create_client_instance()
+
+        # Passez le client créé lors de l'authentification à la nouvelle interface
+        game_mode_selection_interface = GameModeSelectionInterface(client, new_root, token)
         new_root.mainloop()
 
     def create_client_instance(self):
-        # Ici, vous devez créer et retourner une instance de votre classe `Client`.
-        # Vous pouvez utiliser les informations d'authentification ou d'autres paramètres nécessaires pour initialiser le client.
         host = "127.0.0.1"
         port = 9999  # Ou un autre port si nécessaire
         return Client(host, port)
