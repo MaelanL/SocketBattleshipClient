@@ -4,16 +4,17 @@ from model.ShipCell import ShipCell
 
 
 class GameManagerInterface:
-    def __init__(self, client):
+    def __init__(self, client, token):
         self.client = client
+        self.token = token
         self.player_board = [['O'] * 10 for _ in range(10)]
         self.opponent_board = [['O'] * 10 for _ in range(10)]
         self.initialize_game()
 
-    def initialize_game(self):
+    def initialize_game(self,token):
         board = self.random_ship_placement()
         board_dict = [cell.to_dict() for cell in board]
-        request = {'board': board_dict, 'computerLevel': 2, 'x': None, 'y': None}
+        request = {'board': board_dict, 'computerLevel': 2, 'token': token, 'x': None, 'y': None}
         self.client.send_request(request)
         # Gérer la réponse initiale du serveur, si nécessaire
 
@@ -27,8 +28,9 @@ class GameManagerInterface:
                     break
         return board
 
+
     def make_request(self, request_type, x, y):
-        request = {'type': request_type, 'x': x, 'y': y}
+        request = {'type': request_type, 'token': self.token, 'x': x, 'y': y}
         self.client.send_request(request)
 
     def handle_response(self, response):

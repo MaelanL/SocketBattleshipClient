@@ -7,9 +7,10 @@ from client.Client import Client
 
 
 class GameModeSelectionInterface:
-    def __init__(self, client, root):
+    def __init__(self, client, root, token):
         self.client = client
         self.root = root
+        self.token = token
         self.frame = tk.Frame(self.root)
         self.frame.pack()
 
@@ -33,8 +34,8 @@ class GameModeSelectionInterface:
         except Exception as e:
             messagebox.showerror("Erreur de connexion", f"Impossible de se connecter au serveur: {e}")
 
-    def launch_game_interface(self, client):
+    def launch_game_interface(self):
         # Lancer l'interface de jeu de la bataille navale
-        game_manager_interface = GameManagerInterface(client)
+        game_manager_interface = GameManagerInterface(self.client, self.token)
         battle_ship_interface = BattleShipInterface(game_manager_interface)
         battle_ship_interface.run()

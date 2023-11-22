@@ -84,7 +84,7 @@ def mainClient1():
 
                             else:
                                 x, y = get_user_attack_coordinates()
-                                game_manager.make_request(type,token, x, y)
+                                game_manager.make_request(type, token, x, y)
 
                 client.close()
             else:

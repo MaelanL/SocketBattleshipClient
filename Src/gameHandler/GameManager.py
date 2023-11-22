@@ -37,7 +37,7 @@ class GameManager:
     def manual_ship_placement(self):
         board = []
         print("Placez vos bateaux (saisissez les coordonnées x et y) :")
-        for _ in range(5):  # Nombre de bateaux à placer
+        for _ in range(4):  # Nombre de bateaux à placer
             while True:
                 try:
                     x = int(input("x: "))

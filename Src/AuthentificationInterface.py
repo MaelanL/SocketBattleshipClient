@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 from tkinter import messagebox
 
@@ -31,22 +32,36 @@ class AuthenticationInterface:
     def authenticate(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
-        token = self.auth_client.authenticate(username, password)
+        response = self.auth_client.authenticate(username, password)
+        token_match = re.search(r'token=([^)]+)', response)
+        if token_match:
+            token = token_match.group(1)
+            status = re.search(r'status=(\d+)', response)
 
-        if len(token) == 36:  # Supposant que le token est un UUID
-            messagebox.showinfo("Succès", "Authentification réussie")
-            self.root.destroy()  # Fermer la fenêtre d'authentification
-            self.launch_game_mode_selection()  # Lancer la sélection du mode de jeu
+            if status:
+                login = int(status.group(1))
+                if login == 0:
+                    messagebox.showinfo("Succès", "Authentification réussie")
+                    self.root.destroy()  # Fermer la fenêtre d'authentification
+                    self.launch_game_mode_selection(token)  # Lancer la sélection du mode de jeu
+                else:
+                    messagebox.showerror("Échec", "Authentification échouée")
+            else:
+                messagebox.showerror("Échec", "Le statut n a pas pu être extrait de la réponse")
         else:
-            messagebox.showerror("Échec", "Authentification échouée")
+            messagebox.showerror("Échec", "token non valide")
 
-    def launch_game_mode_selection(self):
+
+
+
+
+
+    def launch_game_mode_selection(self, token):
         # Créez un nouveau Tk root ici pour la nouvelle fenêtre
         new_root = tk.Tk()
         new_root.title("Sélection du Mode de Jeu")
-        # Passez le client créé lors de l'authentification à la nouvelle interface
-        game_mode_selection_interface = GameModeSelectionInterface(self.auth_client, new_root)
-        game_mode_selection_interface.root.mainloop()
+        game_mode_selection_interface = GameModeSelectionInterface(self.client, new_root, token)
+        new_root.mainloop()
 
     def create_client_instance(self):
         # Ici, vous devez créer et retourner une instance de votre classe `Client`.

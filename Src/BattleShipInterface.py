@@ -11,21 +11,21 @@ class BattleShipInterface:
         self.create_attack_button()
 
     def create_boards(self):
-        self.player_board_frame = tk.LabelFrame(self.root, text="Votre Plateau :", bg="blue")
+        self.player_board_frame = tk.LabelFrame(self.root, text="Votre Plateau :")
         self.player_board_frame.pack(side="left", padx=10, pady=10)
 
-        self.opponent_board_frame = tk.LabelFrame(self.root, text="Plateau de l'adversaire :", bg="blue")
+        self.opponent_board_frame = tk.LabelFrame(self.root, text="Plateau de l'adversaire :")
         self.opponent_board_frame.pack(side="right", padx=10, pady=10)
 
         # Add column numbers above the boards
         for i in range(10):
-            tk.Label(self.player_board_frame, text=str(i), bg="blue").grid(row=0, column=i+1)
-            tk.Label(self.opponent_board_frame, text=str(i), bg="blue").grid(row=0, column=i+1)
+            tk.Label(self.player_board_frame, text=str(i)).grid(row=0, column=i+1)
+            tk.Label(self.opponent_board_frame, text=str(i)).grid(row=0, column=i+1)
 
         # Add row numbers to the side of the boards
         for i in range(10):
-            tk.Label(self.player_board_frame, text=str(i), bg="blue").grid(row=i+1, column=0)
-            tk.Label(self.opponent_board_frame, text=str(i), bg="blue").grid(row=i+1, column=0)
+            tk.Label(self.player_board_frame, text=str(i)).grid(row=i+1, column=0)
+            tk.Label(self.opponent_board_frame, text=str(i)).grid(row=i+1, column=0)
 
         # Create grids for the game boards
         self.player_buttons = [[tk.Button(self.player_board_frame, text=" ", state="disabled", bg="lightblue")
