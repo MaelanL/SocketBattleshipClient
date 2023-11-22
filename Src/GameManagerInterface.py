@@ -4,9 +4,8 @@ from model.ShipCell import ShipCell
 
 
 class GameManagerInterface:
-    def __init__(self, client, battle_ship_interface):
+    def __init__(self, client):
         self.client = client
-        self.battle_ship_interface = battle_ship_interface
         self.player_board = [['O'] * 10 for _ in range(10)]
         self.opponent_board = [['O'] * 10 for _ in range(10)]
         self.initialize_game()

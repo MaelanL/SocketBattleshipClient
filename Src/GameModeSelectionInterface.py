@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
+
+from BattleShipInterface import BattleShipInterface
+from GameManagerInterface import GameManagerInterface
 from client.Client import Client
 
 
@@ -32,9 +35,6 @@ class GameModeSelectionInterface:
 
     def launch_game_interface(self, client):
         # Lancer l'interface de jeu de la bataille navale
-        from BattleShipInterface import BattleShipInterface
-        from GameManagerInterface import GameManagerInterface
-
         game_manager_interface = GameManagerInterface(client)
         battle_ship_interface = BattleShipInterface(game_manager_interface)
         battle_ship_interface.run()

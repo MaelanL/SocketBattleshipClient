@@ -17,7 +17,7 @@ class GameManager:
         self.opponent_board = [['O'] * 10 for _ in range(10)]
         self.computer_level = 1
 
-    def initialize_game(self,mode):
+    def initialize_game(self,mode,token):
         if mode =="solo":
             self.computer_level = input("Choisissez le niveau de l'ordinateur (1-3, laissez vide pour niveau 1): ") or '1'
             self.computer_level = int(self.computer_level)
@@ -31,7 +31,7 @@ class GameManager:
             board = self.random_ship_placement()
 
         board_dict = [cell.to_dict() for cell in board]
-        request = {'board': board_dict, 'computerLevel': self.computer_level, 'x': None, 'y': None}
+        request = {'token': token, 'board': board_dict, 'computerLevel': self.computer_level, 'x': None, 'y': None}
         self.client.send_request(request)
 
     def manual_ship_placement(self):
@@ -61,9 +61,10 @@ class GameManager:
                     break
         return board
 
-    def make_request(self, type, x, y):
+    def make_request(self, type,token, x, y):
         request = {
             'type': type,
+            'token': token,
             'board': None,
             'x': x,
             'y': y}
@@ -72,18 +73,18 @@ class GameManager:
     def handle_response(self, response):
         print("Réponse du serveur :", response)
 
-        if response.get("hasPlayerWon"):
+        if response.get("playerWon"):
             print("Vous avez gagné !")
             return True  # Indique que le jeu est terminé
 
-        if response.get("hasOpponentWon"):
+        if response.get("opponentWon"):
             print("Vous avez perdu !")
             return True  # Indique que le jeu est terminé
 
         return False  # Continue le jeu
 
     def is_player_turn(self, response):
-        return response.get("isPlayerTurn", False)
+        return response.get("playerTurn", False)
 
     def print_boards(self):
         # En-têtes pour les colonnes ajustées pour l'alignement
