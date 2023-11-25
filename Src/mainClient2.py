@@ -20,7 +20,7 @@ def get_user_attack_coordinates():
 
 def mainMultiClient2():
     auth_host = "127.0.0.1"
-    auth_port = 9999
+    auth_port = 9999  # Le même port que celui du AuthServer
 
     auth_client = AuthenticationClient(auth_host, auth_port)
     username = input("Nom d'utilisateur: ")
@@ -31,7 +31,7 @@ def mainMultiClient2():
     # Convertir la chaîne JSON en dictionnaire Python
     print(response)
 
-
+    # Utiliser les expressions régulières pour trouver le statut
     status = re.search(r'status=(\d+)', response)
 
     if status:
@@ -58,9 +58,9 @@ def mainMultiClient2():
 
                 client = Client(host, port)
                 client.connect()
-
+                roomId = input("Entrez le roomId: ")
                 game_manager = GameManager(client)
-                game_manager.initialize_game(mode,token)
+                game_manager.initialize_game(mode, token, roomId)
 
                 game_over = False
                 while not game_over:
@@ -79,13 +79,13 @@ def mainMultiClient2():
                             type = input("taper 2 si vous voulez abandonner, sinon taper 1: ")
                             # si type = 2, on abandonne la partie sinon on joue
                             if type == "2":
-                                game_manager.make_request(type,token, None, None)
+                                game_manager.make_request(type,token,roomId, None, None)
                                 print("Vous avez abandonné la partie")
 
 
                             else:
                                 x, y = get_user_attack_coordinates()
-                                game_manager.make_request(type,token, x, y)
+                                game_manager.make_request(type, token,roomId, x, y)
 
                 client.close()
             else:
@@ -94,9 +94,6 @@ def mainMultiClient2():
             print("Échec de l'authentification")
     else:
         print("Le statut n'a pas pu être extrait de la réponse")
-
-
-
 
 if __name__ == "__main__":
     mainMultiClient2()

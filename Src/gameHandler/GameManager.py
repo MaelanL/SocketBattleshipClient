@@ -17,7 +17,7 @@ class GameManager:
         self.opponent_board = [['O'] * 10 for _ in range(10)]
         self.computer_level = 1
 
-    def initialize_game(self,mode,token):
+    def initialize_game(self,mode,token,roomId):
         if mode =="solo":
             self.computer_level = input("Choisissez le niveau de l'ordinateur (1-3, laissez vide pour niveau 1): ") or '1'
             self.computer_level = int(self.computer_level)
@@ -31,7 +31,7 @@ class GameManager:
             board = self.random_ship_placement()
 
         board_dict = [cell.to_dict() for cell in board]
-        request = {'token': token, 'board': board_dict, 'computerLevel': self.computer_level, 'x': None, 'y': None}
+        request = {'token': token, 'board': board_dict, 'computerLevel': self.computer_level, 'roomId': roomId, 'x': None, 'y': None}
         self.client.send_request(request)
 
     def manual_ship_placement(self):
@@ -61,11 +61,12 @@ class GameManager:
                     break
         return board
 
-    def make_request(self, type,token, x, y):
+    def make_request(self, type,token, roomId, x, y):
         request = {
             'type': type,
             'token': token,
             'board': None,
+            'roomId': roomId,
             'x': x,
             'y': y}
         self.client.send_request(request)
