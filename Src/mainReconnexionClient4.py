@@ -79,7 +79,6 @@ def mainReconnexionClient4():
                     game_over = False
                     roomId = "0"
                     while not game_over:
-                        print("on est la")
                         response = client.receive_response()
                         print(response)
                         game_over = game_manager.handle_response(response)
