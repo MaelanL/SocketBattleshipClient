@@ -31,7 +31,12 @@ class GameManager:
             board = self.random_ship_placement()
 
         board_dict = [cell.to_dict() for cell in board]
-        request = {'token': token, 'board': board_dict, 'computerLevel': self.computer_level, 'roomId': roomId, 'x': None, 'y': None}
+        gameId= None
+        type="0"
+        print(token)
+        request = {'type': type, 'token': token, 'board': board_dict, 'computerLevel': self.computer_level, 'roomId': roomId, 'gameId': gameId, 'x': None, 'y': None}
+        print("Envoi de la requête au serveur...")
+        print(request)
         self.client.send_request(request)
 
     def manual_ship_placement(self):

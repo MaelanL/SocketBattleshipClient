@@ -18,7 +18,7 @@ def get_user_attack_coordinates():
     y = int(input("Entrez y : "))
     return x, y
 
-def mainMultiClient3():
+def mainMultiClient4():
     auth_host = "127.0.0.1"
     auth_port = 9999  # Le même port que celui du AuthServer
 
@@ -149,4 +149,4 @@ def mainMultiClient3():
         print("Le statut n'a pas pu être extrait de la réponse")
 
 if __name__ == "__main__":
-    mainMultiClient3()
+    mainMultiClient4()

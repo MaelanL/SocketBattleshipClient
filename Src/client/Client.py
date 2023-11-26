@@ -17,6 +17,7 @@ class Client:
 
     def receive_response(self):
         response = self.socket.recv(4096)
+        print(response)
         return json.loads(response.decode('utf-8'))
 
     def close(self):

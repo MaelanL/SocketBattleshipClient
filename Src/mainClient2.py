@@ -40,7 +40,7 @@ def mainMultiClient2():
         if login == 0:
             print("Connexion réussie")
             # Extract the token from the response
-            token_match = re.search(r'token=([^)]+)', response)
+            token_match = re.search(r"token=([^,]+)", response)
 
             if token_match:
                 token = token_match.group(1)
@@ -58,7 +58,11 @@ def mainMultiClient2():
 
                 client = Client(host, port)
                 client.connect()
-                roomId = input("Entrez le roomId: ")
+                if mode == "solo":
+                    roomId= "0"
+                else:
+                    roomId = input("Entrez le roomId: ")
+
                 game_manager = GameManager(client)
                 game_manager.initialize_game(mode, token, roomId)
 
@@ -81,7 +85,6 @@ def mainMultiClient2():
                             if type == "2":
                                 game_manager.make_request(type,token,roomId, None, None)
                                 print("Vous avez abandonné la partie")
-
 
                             else:
                                 x, y = get_user_attack_coordinates()

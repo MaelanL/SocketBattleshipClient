@@ -39,7 +39,7 @@ def mainClient1():
         if login == 0:
             print("Connexion réussie")
             # Extract the token from the response
-            token_match = re.search(r'token=([^)]+)', response)
+            token_match = re.search(r"token=([^,]+)", response)
 
             if token_match:
                 token = token_match.group(1)
